@@ -35,59 +35,59 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
     die('ERROR: could not encode value');
   }
 
-  // String
-  if ($_POST['type'] == 'string') {
-    $redis->set($key, $value);
-  }
+  // // String
+  // if ($_POST['type'] == 'string') {
+  //   $redis->set($key, $value);
+  // }
 
-  // Hash
-  else if (($_POST['type'] == 'hash') && isset($_POST['hkey'])) {
-    if (strlen($_POST['hkey']) > $config['maxkeylen']) {
-      die('ERROR: Your hash key is to long (max length is '.$config['maxkeylen'].')');
-    }
+  // // Hash
+  // else if (($_POST['type'] == 'hash') && isset($_POST['hkey'])) {
+  //   if (strlen($_POST['hkey']) > $config['maxkeylen']) {
+  //     die('ERROR: Your hash key is to long (max length is '.$config['maxkeylen'].')');
+  //   }
 
-    if ($edit && !$redis->hExists($key, input_convert($_POST['hkey']))) {
-      $redis->hDel($key, input_convert($_GET['hkey']));
-    }
+  //   if ($edit && !$redis->hExists($key, input_convert($_POST['hkey']))) {
+  //     $redis->hDel($key, input_convert($_GET['hkey']));
+  //   }
 
-    $redis->hSet($key, input_convert($_POST['hkey']), $value);
-  }
+  //   $redis->hSet($key, input_convert($_POST['hkey']), $value);
+  // }
 
-  // List
-  else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
-    $size = $redis->lLen($key);
+  // // List
+  // else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
+  //   $size = $redis->lLen($key);
 
-    if (($_POST['index'] == '') ||
-        ($_POST['index'] == $size)) {
-      // Push it at the end
-      $redis->rPush($key, $value);
-    } else if ($_POST['index'] == -1) {
-      // Push it at the start
-      $redis->lPush($key, $value);
-    } else if (($_POST['index'] >= 0) &&
-               ($_POST['index'] < $size)) {
-      // Overwrite an index
-      $redis->lSet($key, input_convert($_POST['index']), $value);
-    } else {
-      die('ERROR: Out of bounds index');
-    }
-  }
+  //   if (($_POST['index'] == '') ||
+  //       ($_POST['index'] == $size)) {
+  //     // Push it at the end
+  //     $redis->rPush($key, $value);
+  //   } else if ($_POST['index'] == -1) {
+  //     // Push it at the start
+  //     $redis->lPush($key, $value);
+  //   } else if (($_POST['index'] >= 0) &&
+  //              ($_POST['index'] < $size)) {
+  //     // Overwrite an index
+  //     $redis->lSet($key, input_convert($_POST['index']), $value);
+  //   } else {
+  //     die('ERROR: Out of bounds index');
+  //   }
+  // }
 
-  // Set
-  else if ($_POST['type'] == 'set') {
-    if ($_POST['value'] != $_POST['oldvalue']) {
-      // The only way to edit a Set value is to add it and remove the old value.
-      $redis->sRem($key, encodeOrDecode('save', $key, input_convert($_POST['oldvalue'])));
-      $redis->sAdd($key, $value);
-    }
-  }
+  // // Set
+  // else if ($_POST['type'] == 'set') {
+  //   if ($_POST['value'] != $_POST['oldvalue']) {
+  //     // The only way to edit a Set value is to add it and remove the old value.
+  //     $redis->sRem($key, encodeOrDecode('save', $key, input_convert($_POST['oldvalue'])));
+  //     $redis->sAdd($key, $value);
+  //   }
+  // }
 
-  // ZSet
-  else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
-    // The only way to edit a ZSet value is to add it and remove the old value.
-    $redis->zRem($key, encodeOrDecode('save', $key, input_convert($_POST['oldvalue'])));
-    $redis->zAdd($key, input_convert($_POST['score']), $value);
-  }
+  // // ZSet
+  // else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
+  //   // The only way to edit a ZSet value is to add it and remove the old value.
+  //   $redis->zRem($key, encodeOrDecode('save', $key, input_convert($_POST['oldvalue'])));
+  //   $redis->zAdd($key, input_convert($_POST['score']), $value);
+  // }
 
 
 

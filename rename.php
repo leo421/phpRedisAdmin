@@ -5,26 +5,26 @@ require_once 'includes/common.inc.php';
 
 
 
-if (isset($_POST['old'], $_POST['key'])) {
-  if (strlen($_POST['key']) > $config['maxkeylen']) {
-    die('ERROR: Your key is to long (max length is '.$config['maxkeylen'].')');
-  }
+// if (isset($_POST['old'], $_POST['key'])) {
+//   if (strlen($_POST['key']) > $config['maxkeylen']) {
+//     die('ERROR: Your key is to long (max length is '.$config['maxkeylen'].')');
+//   }
 
-  $redis->rename($_POST['old'], $_POST['key']);
+//   $redis->rename($_POST['old'], $_POST['key']);
 
 
-  // Refresh the top so the key tree is updated.
-  require 'includes/header.inc.php';
+//   // Refresh the top so the key tree is updated.
+//   require 'includes/header.inc.php';
 
-  ?>
-  <script>
-  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&d=<?php echo $server['db']?>&key=<?php echo urlencode($_POST['key'])?>';
-  </script>
-  <?php
+//   ?>
+//   <script>
+//   top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&d=<?php echo $server['db']?>&key=<?php echo urlencode($_POST['key'])?>';
+//   </script>
+//   <?php
 
-  require 'includes/footer.inc.php';
-  die;
-}
+//   require 'includes/footer.inc.php';
+//   die;
+// }
 
 
 

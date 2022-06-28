@@ -9,5 +9,5 @@ if (!isset($_POST['post'])) {
 require_once 'includes/common.inc.php';
 
 
-$redis->flushdb();
+// $redis->flushdb();
 

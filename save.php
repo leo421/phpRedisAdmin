@@ -17,9 +17,9 @@ require 'includes/header.inc.php';
 <?php
 
 // Flush everything so far cause the next command could take some time.
-flush();
+// flush();
 
-$redis->save();
+// $redis->save();
 
 ?>
  done.
